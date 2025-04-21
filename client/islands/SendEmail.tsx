@@ -1,5 +1,4 @@
-/** @jsx h */
-import { h } from "preact";
+
 import { useState } from "preact/hooks";
 
 export default function SendEmail() {
@@ -8,37 +7,50 @@ export default function SendEmail() {
   const [msg, setMsg] = useState("");
 
   const sendEmail = async () => {
+  try {
     if (!file) {
       setMsg("❌ Please select a CSV file.");
       return;
     }
-
+    
     // Optional: Frontend check for CSV
     if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
       setMsg("❌ Invalid file type. Only CSV files are allowed.");
       return;
     }
-
+    
+    setMsg("⏳ Sending emails...");
+    
     const formData = new FormData();
     formData.append("csv", file);
     formData.append("template", template);
-
-    const res = await fetch("http://localhost:8000/send", {
+    
+    console.log("Sending request to server...");
+    const res = await fetch("http://localhost:8787/send", {
       method: "POST",
       headers: {
         "Authorization": "Basic " + btoa("zapadmin:supersecret123"),
-        // ⚠️ DO NOT set Content-Type, browser does it for FormData
+        "x-api-key": "howareyouharshithareyouplayinggames"
       },
       body: formData,
     });
-
+    
+    console.log("Response status:", res.status);
+    console.log("Response ok:", res.ok);
+    
+    const textResponse = await res.text();
+    console.log("Response text:", textResponse);
+    
     if (res.ok) {
-      setMsg("✅ Emails sent!");
+      setMsg("✅ Emails sent successfully!");
     } else {
-      const err = await res.text();
-      setMsg("❌ Error: " + err);
+      setMsg(`❌ Error: ${textResponse || 'Unknown error'} (Status: ${res.status})`);
     }
-  };
+  } catch (error) {
+    console.error("Exception occurred:", error);
+    setMsg(`❌ Error: ${error.message}`);
+  }
+};
 
   return (
     <div class="p-4 max-w-md mx-auto space-y-4">
