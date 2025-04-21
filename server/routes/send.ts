@@ -2,12 +2,18 @@ import { Hono } from "hono";
 import Papa from "papaparse";
 import { Resend } from "resend"; // Correct import
 import * as dotenv from "dotenv";
+import { db } from "../db/client.ts";
+import { cors } from "https://deno.land/x/hono@v3.11.6/middleware.ts";
+
+
 
 // Load environment variables
 await dotenv.load({ export: true });
 
 
 export const sendRoute = new Hono();
+
+sendRoute.use("*", cors()); // ✅ CORS enabled for all routes
 
 type Lead = {
   name: string;
@@ -73,12 +79,25 @@ async function sendEmail(name: string, toEmail: string, template: string) {
     const subject = `Hello ${name}, here's your message!`;
     const body = template.replace("{name}", name);
 
-    await resend.emails.send({
+    const data = await resend.emails.send({
       from: senderEmail,
       to: toEmail,
       subject: subject,
       html: body,
     });
+
+    let status = "sent";
+    let errorMsg = null;
+    if (!data || data.error) {
+      status = "failed";
+      errorMsg = data?.error?.message || "Unknown error";
+    }
+
+    await db.execute(
+      `INSERT INTO emails (name, email, template_used, sent_at, status, error_msg)
+       VALUES (?, ?, ?, ?, ?, ?);`,
+      [ name, toEmail, template, Math.floor(Date.now()/1000), status, errorMsg ]
+    );
 
     console.log(`✅ Email sent to ${toEmail}`);
     console.log(`from ${senderEmail}`)
