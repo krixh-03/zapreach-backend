@@ -19,7 +19,7 @@ app.route('/send', sendRoute);
 app.route("/emails", logsRoute);
 
 // Start server (await to make sure the server is up before continuing)
-await Deno.serve(app.fetch);
+Deno.serve({ port: 8787 }, app.fetch);
 
 // Optional: Debugging (only in dev)
 if (Deno.env.get("ENV") === "dev") {
