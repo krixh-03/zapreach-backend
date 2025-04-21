@@ -1,46 +1,71 @@
-import React, { useState } from "react";
+// src/components/EmailForm.tsx
+import { useState } from "react";
 
 export default function EmailForm() {
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
+  const [template, setTemplate] = useState("");
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [status, setStatus] = useState("");
 
-  const handleSend = () => {
-    if (!subject || !body) {
-      alert("Please enter both subject and body.");
+  const handleSend = async () => {
+    if (!csvFile || !template) {
+      setStatus("❌ Please upload a CSV and type an email template.");
       return;
     }
 
-    // TODO: Call backend API to send emails
-    console.log("Sending emails with subject:", subject);
-    console.log("Body:", body);
+    const formData = new FormData();
+    formData.append("csv", csvFile);
+    formData.append("template", template);
+
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL, {
+        method: "POST",
+        headers: {
+          "x-api-key": import.meta.env.VITE_API_KEY!,
+        },
+        body: formData,
+      });
+
+      const text = await response.text();
+      if (!response.ok) throw new Error(text);
+
+      setStatus("✅ Emails sent successfully!");
+    } catch (err: any) {
+      console.error(err);
+      setStatus("❌ Error: " + err.message);
+    }
   };
 
   return (
-    <div className="bg-white shadow p-4 rounded-xl border space-y-4">
-      <h2 className="text-lg font-semibold">Compose Email</h2>
+    <div className="space-y-4">
+      <label>
+        <span className="font-semibold">Upload CSV:</span>
+        <input
+          type="file"
+          accept=".csv"
+          onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+          className="mt-2"
+        />
+      </label>
 
-      <input
-        type="text"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
-        placeholder="Subject"
-        className="w-full border rounded px-3 py-2 text-sm"
-      />
-
-      <textarea
-        rows={6}
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-        placeholder="Hi {{firstName}}, just wanted to reach out..."
-        className="w-full border rounded px-3 py-2 text-sm"
-      />
+      <label>
+        <span className="font-semibold">Email Template (use {'{name}'}):</span>
+        <textarea
+          rows={6}
+          value={template}
+          onChange={(e) => setTemplate(e.target.value)}
+          className="w-full border border-gray-300 rounded p-2 mt-2"
+          placeholder="Hey {name}, check out our new tool!"
+        />
+      </label>
 
       <button
         onClick={handleSend}
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
       >
         Send Emails
       </button>
+
+      {status && <p className="text-sm text-gray-600 mt-2">{status}</p>}
     </div>
   );
 }
