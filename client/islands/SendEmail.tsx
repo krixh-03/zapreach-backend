@@ -22,10 +22,6 @@ export default function SendEmail() {
       setMsg("❌ Template cannot be empty.");
       return;
     }
-    if (!/\{\{\s*name\s*\}\}/.test(template)) {
-      setMsg("❌ Template must include {{ name }} to personalize emails.");
-      return;
-    }
  
  
     setMsg("⏳ Sending emails...");
