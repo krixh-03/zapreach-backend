@@ -77,7 +77,8 @@ sendRoute.post("/", async (c) => {
 async function sendEmail(name: string, toEmail: string, template: string) {
   try {
     const subject = `Hello ${name}, here's your message!`;
-    const body = template.replace("{name}", name);
+    const body = template.replace(/\{\{\s*name\s*\}\}/gi, name);
+
 
     const data = await resend.emails.send({
       from: senderEmail,
