@@ -79,7 +79,7 @@ async function sendEmail(name: string, toEmail: string, template: string) {
     if(!template || template.trim() === "") {
       return c.text("❌ Template is empty or invalid.");
     }
-}
+
     const subject = `Hello ${name}, here's your message!`;
     const body = template.replace(/\{\{\s*name\s*\}\}/gi, name);
 

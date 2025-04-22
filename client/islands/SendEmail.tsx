@@ -59,6 +59,9 @@ export default function SendEmail() {
 
   return (
     <div class="p-4 max-w-md mx-auto space-y-4">
+      <label class="text-sm text-gray-600">
+        Select a CSV file with leads (name, email) to send emails to:
+      </label>
       <input
         class="block w-full border p-2"
         type="file"
