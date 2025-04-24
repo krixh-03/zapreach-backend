@@ -18,7 +18,12 @@ export default function SendEmail() {
       setMsg("❌ Invalid file type. Only CSV files are allowed.");
       return;
     }
-    
+    if (!template.trim()) {
+      setMsg("❌ Template cannot be empty.");
+      return;
+    }
+ 
+ 
     setMsg("⏳ Sending emails...");
     
     const formData = new FormData();
@@ -54,12 +59,18 @@ export default function SendEmail() {
 
   return (
     <div class="p-4 max-w-md mx-auto space-y-4">
+      <label class="text-sm text-gray-600">
+        Select a CSV file with leads (name, email) to send emails to:
+      </label>
       <input
         class="block w-full border p-2"
         type="file"
         accept=".csv"
         onChange={(e) => setFile(e.currentTarget.files?.[0] ?? null)}
       />
+      <label class="text-sm text-gray-600">
+        You can use <code>{"{{ name }}"}</code> in your message. It will be replaced with each lead's name from the CSV.
+      </label>
       <textarea
         class="block w-full border p-2"
         rows={5}
