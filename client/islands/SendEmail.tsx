@@ -1,4 +1,3 @@
-
 import { useState } from "preact/hooks";
 
 export default function SendEmail() {
@@ -7,84 +6,69 @@ export default function SendEmail() {
   const [msg, setMsg] = useState("");
 
   const sendEmail = async () => {
-  try {
-    if (!file) {
-      setMsg("❌ Please select a CSV file.");
-      return;
+
+    try {
+      if (!file) {
+        setMsg("❌ Please select a CSV file.");
+        return;
+      }
+
+      if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
+        setMsg("❌ Invalid file type. Only CSV files are allowed.");
+        return;
+      }
+
+      setMsg("⏳ Sending emails...");
+
+      const formData = new FormData();
+      formData.append("csv", file);
+      formData.append("template", template);
+
+      const res = await fetch("http://localhost:8787/send", {
+        method: "POST",
+        headers: {
+          Authorization: "Basic " + btoa("zapadmin:supersecret123"),
+          "x-api-key": "howareyouharshithareyouplayinggames",
+        },
+        body: formData,
+      });
+
+      const textResponse = await res.text();
+
+      if (res.ok) {
+        setMsg("✅ Emails sent successfully!");
+      } else {
+        setMsg(`❌ Error: ${textResponse || "Unknown error"} (Status: ${res.status})`);
+      }
+    } catch (error: any) {
+      console.error("Exception occurred:", error);
+      setMsg(`❌ Error: ${error.message}`);
     }
-    
-    // Optional: Frontend check for CSV
-    if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
-      setMsg("❌ Invalid file type. Only CSV files are allowed.");
-      return;
-    }
-    if (!template.trim()) {
-      setMsg("❌ Template cannot be empty.");
-      return;
-    }
- 
- 
-    setMsg("⏳ Sending emails...");
-    
-    const formData = new FormData();
-    formData.append("csv", file);
-    formData.append("template", template);
-    
-    console.log("Sending request to server...");
-    const res = await fetch("http://localhost:8787/send", {
-      method: "POST",
-      headers: {
-        "Authorization": "Basic " + btoa("zapadmin:supersecret123"),
-        "x-api-key": "howareyouharshithareyouplayinggames"
-      },
-      body: formData,
-    });
-    
-    console.log("Response status:", res.status);
-    console.log("Response ok:", res.ok);
-    
-    const textResponse = await res.text();
-    console.log("Response text:", textResponse);
-    
-    if (res.ok) {
-      setMsg("✅ Emails sent successfully!");
-    } else {
-      setMsg(`❌ Error: ${textResponse || 'Unknown error'} (Status: ${res.status})`);
-    }
-  } catch (error) {
-    console.error("Exception occurred:", error);
-    setMsg(`❌ Error: ${error.message}`);
-  }
-};
+  };
 
   return (
-    <div class="p-4 max-w-md mx-auto space-y-4">
-      <label class="text-sm text-gray-600">
-        Select a CSV file with leads (name, email) to send emails to:
-      </label>
-      <input
-        class="block w-full border p-2"
-        type="file"
-        accept=".csv"
-        onChange={(e) => setFile(e.currentTarget.files?.[0] ?? null)}
-      />
-      <label class="text-sm text-gray-600">
-        You can use <code>{"{{ name }}"}</code> in your message. It will be replaced with each lead's name from the CSV.
-      </label>
+
+    <div class="w-full max-w-2xl bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-6 rounded-2xl shadow-xl border border-yellow-300">
+      <label class="block text-sm font-semibold text-gray-200 mb-1">Upload CSV File</label>
+
+
+      <label class="block text-sm font-semibold text-gray-200 mb-1">Email Template</label>
       <textarea
-        class="block w-full border p-2"
-        rows={5}
-        placeholder="Enter your email template here"
+        class="block w-full bg-gray-700 text-white border border-gray-700 rounded-md shadow-sm p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        rows={6}
+        placeholder="Hi {{name}}, we noticed you're doing amazing work at {{company}}..."
         value={template}
         onInput={(e) => setTemplate(e.currentTarget.value)}
       />
+
       <button
-        class="bg-blue-500 text-white px-4 py-2 rounded"
+        class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-3 px-6 rounded-xl transition duration-200 shadow"
         onClick={sendEmail}
       >
-        Send Emails
+        ✉️ Send Emails
       </button>
-      <p class="mt-2 text-sm">{msg}</p>
+
+      {msg && <p class="mt-4 text-center text-sm text-gray-300">{msg}</p>}
     </div>
   );
 }
