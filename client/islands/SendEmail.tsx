@@ -3,17 +3,26 @@ import { useEffect, useState } from "preact/hooks";
 export default function SendEmail() {
   const [file, setFile] = useState<File | null>(null);
   const [template, setTemplate] = useState("");
+  const [subjectTemplate, setSubjectTemplate] = useState("");
   const [msg, setMsg] = useState("");
-  const [showWarning, setShowWarning] = useState(true);
+  const [templateWarning, setTemplateWarning] = useState(true);
+  const [subjectTemplateWarning, setSubjectTemplateWarning] = useState(true);
   
-  // Check template for {{name}} whenever it changes
   useEffect(() => {
     if (template && !template.includes("{{name}}") && !template.includes("{{ name }}")) {
-      setShowWarning(true);
+      setTemplateWarning(true);
     } else {
-      setShowWarning(false);
+      setTemplateWarning(false);
     }
   }, [template]);
+
+  useEffect(() => {
+    if (subjectTemplate && !subjectTemplate.includes("{{name}}") && !subjectTemplate.includes("{{ name }}")) {    
+      setSubjectTemplateWarning(true);
+    } else {
+      setSubjectTemplateWarning(false);
+    }
+  }, [subjectTemplate]);
   
   const sendEmail = async () => {
     try {
@@ -29,6 +38,7 @@ export default function SendEmail() {
       const formData = new FormData();
       formData.append("csv", file);
       formData.append("template", template);
+      formData.append("subject", subjectTemplate);
       const res = await fetch("http://localhost:8787/send", {
         method: "POST",
         body: formData,
@@ -60,6 +70,17 @@ export default function SendEmail() {
         onChange={handleFileUpload}
         class="mb-4 block w-full bg-gray-800 border border-gray-600 p-2 rounded"
       />
+      <label class="block text-sm font-semibold text-gray-200 mb-1">Email Subject Template</label>
+      <input
+        type="text"
+        class="block w-full bg-gray-700 text-white border border-gray-700 rounded-md shadow-sm p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        placeholder="Hello {{name}}, this might help you!"
+        value={subjectTemplate}
+        onInput={(e) => setSubjectTemplate(e.currentTarget.value)} 
+      />
+      {subjectTemplateWarning && (
+         <p class="text-yellow-400 text-sm mb-4">⚠️ Name placeholder is missing. Please use {"{"}{"{"}name{"}"}{"}"} to personalize your email.</p>  
+      )}
       <label class="block text-sm font-semibold text-gray-200 mb-1">Email Template</label>
       <textarea
         class="block w-full bg-gray-700 text-white border border-gray-700 rounded-md shadow-sm p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
@@ -68,7 +89,7 @@ export default function SendEmail() {
         value={template}
         onInput={(e) => setTemplate(e.currentTarget.value)}
       />
-      {showWarning && (
+      {templateWarning && (
          <p class="text-yellow-400 text-sm mb-4">⚠️ Name placeholder is missing. Please use {"{"}{"{"}name{"}"}{"}"} to personalize your email.</p>  
       )}
       <button
