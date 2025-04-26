@@ -46,10 +46,23 @@ export default function SendEmail() {
     }
   };
 
+  function handleFileUpload(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if(!file) return;
+    setFile(file);
+  }
+    
   return (
 
     <div class="w-full max-w-2xl bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-6 rounded-2xl shadow-xl border border-yellow-300">
       <label class="block text-sm font-semibold text-gray-200 mb-1">Upload CSV File</label>
+       <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileUpload}
+        class="mb-4 block w-full bg-gray-800 border border-gray-600 p-2 rounded"
+      />
+
 
 
       <label class="block text-sm font-semibold text-gray-200 mb-1">Email Template</label>
