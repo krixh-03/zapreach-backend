@@ -1,10 +1,9 @@
 import { Hono } from 'hono';
 import { sendRoute } from './routes/send.ts';
 import { logsRoute } from './routes/logs.ts';
+import rateLimit from "https://esm.sh/hono-rate-limit@latest";
 import {cors} from 'cors'
-
 import { db } from './db/client.ts';
-
 import { basicAuth } from "./middlewares/auth.ts";
 
 // Initialize app
@@ -12,6 +11,13 @@ const app = new Hono();
 
 app.use('*', cors()); // Enable CORS for all routes
 // app.use('*', basicAuth); // Apply basic auth to all routes
+
+app.use("*", rateLimit({
+  windowMs: 60 * 1000,  // 1 minute
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+}));
 
 // Mount routes
 app.route('/send', sendRoute);
