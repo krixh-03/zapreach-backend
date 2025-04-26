@@ -42,6 +42,7 @@ sendRoute.post("/", async (c) => {
   const formData = await c.req.formData();
   const file = formData.get("csv") as File;
   const template = formData.get("template") as string;
+  const subjectTemplate = formData.get("subject") as string || "Hello {{name}}!, this might help you!";
 
   if (!file || !template) {
     return c.text("Missing CSV or template", 400);
@@ -67,21 +68,21 @@ sendRoute.post("/", async (c) => {
 
   for (const lead of leads) {
     const { name, email } = lead;
-    await sendEmail(name, email, template);
+    await sendEmail(name, email, template, subjectTemplate);
   }
 
   return c.text("Emails sent successfully!");
 });
 
 // Email sending function
-async function sendEmail(name: string, toEmail: string, template: string) {
+async function sendEmail(name: string, toEmail: string, template: string, subjectTemplate: string) {
   try {
     if(!template || template.trim() === "") {
       return c.text("❌ Template is empty or invalid.");
     }
   
 
-    const subject = `Hello ${name}, here's your message!`;
+    const subject = subjectTemplate.replace(/\{\{\s*name\s*\}\}/gi, name);
     const body = template.replace(/\{\{\s*name\s*\}\}/gi, name);
 
 
