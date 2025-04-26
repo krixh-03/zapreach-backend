@@ -34,10 +34,10 @@ const resend = new Resend(apiKey);
 
 // /send route
 sendRoute.post("/", async (c) => {
-  const providedApiKey = c.req.header("x-api-key");
-  if (providedApiKey !== internalApiKey) {
-    return c.text("Unauthorized no x api key", 401);
-  }
+  //const providedApiKey = c.req.header("x-api-key");
+  //if (providedApiKey !== internalApiKey) {
+    //return c.text("Unauthorized no x api key", 401);
+  //}
 
   const formData = await c.req.formData();
   const file = formData.get("csv") as File;

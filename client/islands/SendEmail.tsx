@@ -26,10 +26,10 @@ export default function SendEmail() {
 
       const res = await fetch("http://localhost:8787/send", {
         method: "POST",
-        headers: {
-          Authorization: "Basic " + btoa("zapadmin:supersecret123"),
-          "x-api-key": "howareyouharshithareyouplayinggames",
-        },
+        // headers: {
+        //   Authorization: "Basic " + btoa("zapadmin:supersecret123"),
+        //   "x-api-key": "howareyouharshithareyouplayinggames",
+        // },
         body: formData,
       });
 
@@ -55,7 +55,8 @@ export default function SendEmail() {
   return (
 
     <div class="w-full max-w-2xl bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 p-6 rounded-2xl shadow-xl border border-yellow-300">
-      <label class="block text-sm font-semibold text-gray-200 mb-1">Upload CSV File</label>
+      <label class="block text-sm font-semibold text-gray-200 mb-1">Upload CSV File (📄 Upload a CSV with 'name' and 'email' columns.
+)</label>
        <input
         type="file"
         accept=".csv"

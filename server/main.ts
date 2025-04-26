@@ -11,7 +11,7 @@ import { basicAuth } from "./middlewares/auth.ts";
 const app = new Hono();
 
 app.use('*', cors()); // Enable CORS for all routes
-app.use('*', basicAuth); // Apply basic auth to all routes
+// app.use('*', basicAuth); // Apply basic auth to all routes
 
 // Mount routes
 app.route('/send', sendRoute);
