@@ -13,7 +13,7 @@ export default function Header() {
           <a href="/pricing" class="text-base-content hover:text-blue-600 transition">Pricing</a> */}
           
           {/* Login and Signup Buttons */}
-          <LoginModal />
+          {/* <LoginModal /> */}
           
           {/* <a
             href="/start-free-trial"
