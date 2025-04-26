@@ -1,7 +1,6 @@
 import { Head } from "$fresh/runtime.ts";
 import SendEmail from "../islands/SendEmail.tsx";
 import Header from "../islands/Header.tsx";
-import InstantUserRatings from "../islands/InstantUserRatings.tsx"; // Import the new component
 
 export default function Home() {
   return (
@@ -20,21 +19,19 @@ export default function Home() {
           {/* Left Section */}
           <section class="space-y-6">
             <h2 class="text-5xl font-extrabold leading-snug text-white">
-              Discover, <span class="text-yellow-400">Connect</span> & Convert
-              <br />
-              <span class="text-yellow-500">Your Perfect Clients 🚀</span>
+              Send <span class="text-yellow-400">Better Emails. <br /> </span> Get <span class="text-yellow-400">More Replies.🚀</span>
+                <br />
             </h2>
 
             <p class="text-lg text-gray-300">
-              Quickly identify potential clients, enhance your email outreach,
-              ensure inbox placement, and increase your success with AI-driven tools.
+             Simple cold email tool to help creators and agencies reach leads, follow up automatically, and land in inboxes.
             </p>
 
             <ul class="space-y-2 text-gray-200">
-              <li>✅ <span class="font-semibold">Effortlessly Find Warm Leads</span></li>
-              <li>✅ <span class="font-semibold">Scale Campaigns with Ease</span></li>
-              <li>✅ <span class="font-semibold">Land in Primary Inbox</span></li>
-              <li>✅ <span class="font-semibold">Amplify Results with AI</span></li>
+              <li>✅ <span class="font-semibold">Upload your CSV, write your email, hit send</span></li>
+              <li>✅ <span class="font-semibold">Personalize every message (with {"{"}{"{"}name{"}"}{"}"})</span></li>
+              <li>✅ <span class="font-semibold">Auto-follow-ups, no complicated setup</span></li>
+              <li>✅ <span class="font-semibold">Built for fast testing and quick wins</span></li>
             </ul>
           </section>
 
@@ -43,9 +40,6 @@ export default function Home() {
             <SendEmail />
           </section>
         </main>
-
-        {/* Instant User Ratings Section */}
-        <InstantUserRatings /> {/* Add the new island here */}
       </div>
     </>
 
