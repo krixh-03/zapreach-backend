@@ -1,11 +1,10 @@
-import { h } from "preact";
 import LoginModal from "../islands/LoginModal.tsx";  // If you want the login modal in the header
 
 export default function Header() {
   return (
     <header class="w-full px-6 py-4 border-b border-base-300 bg-base-100 flex justify-center items-center">
       <div class="flex justify-between w-full max-w-7xl">
-        <h1 class="text-xl font-bold text-primary">Zapreach</h1>
+        <h1 class="text-xl font-bold text-primary mt-2">Zapreach</h1>
 
         {/* Navigation Menu */}
         <div class="flex space-x-6 items-center">

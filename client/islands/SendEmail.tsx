@@ -69,12 +69,13 @@ export default function SendEmail() {
       <textarea
         class="block w-full bg-gray-700 text-white border border-gray-700 rounded-md shadow-sm p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-400"
         rows={6}
-        placeholder="Hi {{name}}, we noticed you're doing amazing work at {{company}}..."
+        placeholder="Hi {{name}}, we noticed you're doing amazing work"
         value={template}
         onInput={(e) => setTemplate(e.currentTarget.value)}
       />
 
       <button
+        type="button"
         class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-3 px-6 rounded-xl transition duration-200 shadow"
         onClick={sendEmail}
       >

@@ -1,4 +1,3 @@
-import { h } from "preact";
 import { Head } from "$fresh/runtime.ts";
 import SendEmail from "../islands/SendEmail.tsx";
 import Header from "../islands/Header.tsx";
