@@ -48,11 +48,11 @@ export default function Home() {
         {/* Instant User Ratings Section */}
         <InstantUserRatings /> {/* Add the new island here */}
       </div>
-    </>
        <div class="p-8">
       <h1 class="text-2xl font-bold mb-4">Zapreach</h1>
         <SendEmail />
     </div>
+    </>
 
   );
 }
