@@ -7,6 +7,7 @@
     "@libsql/client": "https://esm.sh/@libsql/client",
     "hono/http-exception": "https://deno.land/x/hono@v3.11.6/http-exception.ts",
     "cors": "https://deno.land/x/hono@v3.11.6/middleware.ts",
-    "hono-rate-limit": "https://esm.sh/hono-rate-limit@2.0.0"
+    "hono-rate-limit": "https://esm.sh/hono-rate-limit@2.0.0",
+     "@/lib/utils": "./src/lib/utils.js"
   }
 }

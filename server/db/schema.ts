@@ -11,3 +11,12 @@ await db.execute(`
     error_msg TEXT DEFAULT NULL
   );
 `);
+
+await db.execute(`CREATE TABLE feedbacks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  text TEXT NOT NULL,
+  upvotes INTEGER DEFAULT 0,
+  ip_address TEXT NOT NULL UNIQUE,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+`);
