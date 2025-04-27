@@ -38,7 +38,7 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "krishna-zapreach-89"
-          entrypoint: "server/main.ts"
+          entrypoint: "main.ts"
           root: ""
           
           
