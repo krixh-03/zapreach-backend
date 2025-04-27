@@ -23,10 +23,10 @@ type Lead = {
 // Environment variables
 const apiKey = Deno.env.get("RESEND_API_KEY");
 const senderEmail = Deno.env.get("FROM_EMAIL");
-const internalApiKey = Deno.env.get("API_KEY");
+// const internalApiKey = Deno.env.get("API_KEY");
 
-if (!apiKey || !senderEmail || !internalApiKey) {
-  throw new Error("Missing RESEND_API_KEY, FROM_EMAIL, or API_KEY in .env");
+if (!apiKey || !senderEmail) {
+  throw new Error("Missing RESEND_API_KEY, FROM_EMAIL in .env");
 }
 
 // Initialize Resend client
