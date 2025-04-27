@@ -39,6 +39,6 @@ jobs:
         with:
           project: "krishna-zapreach-89"
           entrypoint: "server/main.ts"
-          root: "server"
+          root: "zapreach"
           
           
