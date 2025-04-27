@@ -47,12 +47,18 @@ export default function SendEmail() {
         setToastMessage("Please select a CSV file.");
         setToastType("error");
         setToastVisible(true);
+        setTimeout(()=> {
+          setToastVisible(false);
+        }, 3000)
         return;
       }
       if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
         setToastMessage("Invalid file type. Only CSV files are allowed.");
         setToastType("error");
         setToastVisible(true);
+        setTimeout(()=> {
+          setToastVisible(false);
+        }, 3000)
         return;
       }
 
