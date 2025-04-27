@@ -2,7 +2,7 @@
 import { createClient } from "@libsql/client";
 
 // Read the .env file directly and parse it manually
-const envText = await Deno.readTextFile("./.env"); 
+const envText = await Deno.readTextFile("../.env"); 
 const envVars = {};
 
 envText.split('\n').forEach(line => {
