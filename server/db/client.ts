@@ -1,3 +1,6 @@
+import { createClient } from "@libsql/client";
+import "https://deno.land/x/dotenv/load.ts";
+
 const url = Deno.env.get("TURSO_DB_URL");
 const authToken = Deno.env.get("TURSO_DB_TOKEN");
 
@@ -9,3 +12,7 @@ if (!url || !authToken) {
     "Missing TURSO_DB_URL or TURSO_DB_TOKEN environment variables."
   );
 }
+export const db = createClient({
+  url,
+  authToken,
+});
