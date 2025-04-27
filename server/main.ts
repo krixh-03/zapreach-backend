@@ -20,6 +20,11 @@ app.use("*", rateLimit({
   legacyHeaders: false,
 }));
 
+app.use('*', async (c, next) => {
+  console.log(`${c.req.method} ${c.req.url} - Request received`);
+  await next();
+});
+
 // Mount routes
 app.route('/feedback', feedbackRoute);
 app.route('/send', sendRoute);

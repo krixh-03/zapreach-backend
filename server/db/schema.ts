@@ -12,11 +12,12 @@ await db.execute(`
   );
 `);
 
-await db.execute(`CREATE TABLE feedbacks (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  text TEXT NOT NULL,
-  upvotes INTEGER DEFAULT 0,
-  ip_address TEXT NOT NULL UNIQUE,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
-`);
+await db.execute(`
+      CREATE TABLE IF NOT EXISTS feedbacks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        text TEXT NOT NULL,
+        upvotes INTEGER DEFAULT 0,
+        ip TEXT NOT NULL UNIQUE,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
