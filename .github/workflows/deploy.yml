@@ -41,4 +41,4 @@ jobs:
           entrypoint: "server/main.ts"
           root: "server"
           
-          exclude: .env
+          
