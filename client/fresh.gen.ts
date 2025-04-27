@@ -6,10 +6,12 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_joke from "./routes/api/joke.ts";
 import * as $dashboard from "./routes/dashboard.tsx";
+import * as $feedback from "./routes/feedback.tsx";
 import * as $greet_name_ from "./routes/greet/[name].tsx";
 import * as $index from "./routes/index.tsx";
 import * as $settings from "./routes/settings.tsx";
 import * as $Dashboard from "./islands/Dashboard.tsx";
+import * as $FeebackForm from "./islands/FeebackForm.tsx";
 import * as $Header from "./islands/Header.tsx";
 import * as $InstantUserRatings from "./islands/InstantUserRatings.tsx";
 import * as $LoginModal from "./islands/LoginModal.tsx";
@@ -24,12 +26,14 @@ const manifest = {
     "./routes/_app.tsx": $_app,
     "./routes/api/joke.ts": $api_joke,
     "./routes/dashboard.tsx": $dashboard,
+    "./routes/feedback.tsx": $feedback,
     "./routes/greet/[name].tsx": $greet_name_,
     "./routes/index.tsx": $index,
     "./routes/settings.tsx": $settings,
   },
   islands: {
     "./islands/Dashboard.tsx": $Dashboard,
+    "./islands/FeebackForm.tsx": $FeebackForm,
     "./islands/Header.tsx": $Header,
     "./islands/InstantUserRatings.tsx": $InstantUserRatings,
     "./islands/LoginModal.tsx": $LoginModal,
