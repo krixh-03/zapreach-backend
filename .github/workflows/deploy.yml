@@ -24,13 +24,13 @@ jobs:
           deno-version: v2.x
 
       - name: Build step
-        run: "deno task start"
+        run: "deno task build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
           project: "krishna-frontend-26"
           entrypoint: "client/main.ts"
-          root: ""
+          root: "client"
           
           
