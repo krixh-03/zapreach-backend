@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { sendRoute } from './routes/send.ts';
+import { sendRoute, testsendRoute } from './routes/send.ts';
 import { logsRoute } from './routes/logs.ts';
 import { feedbackRoute } from './routes/feedback.ts';
 import rateLimit from "https://esm.sh/hono-rate-limit@latest";
@@ -26,6 +26,7 @@ app.use('*', async (c, next) => {
 });
 
 // Mount routes
+app.route('/send-test', testsendRoute); // Test send route (for testing purposes)
 app.route('/feedback', feedbackRoute);
 app.route('/send', sendRoute);
 app.route("/emails", logsRoute);
