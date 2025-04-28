@@ -12,6 +12,7 @@ await dotenv.load({ export: true });
 
 
 export const sendRoute = new Hono();
+export const testsendRoute = new Hono();
 
 sendRoute.use("*", cors()); // ✅ CORS enabled for all routes
 
@@ -112,3 +113,50 @@ async function sendEmail(name: string, toEmail: string, template: string, subjec
     console.error("❌ Error sending email:", err);
   }
 }
+
+testsendRoute.post("/", async (c) => {
+  try {
+    // Parse JSON body
+    const { email, subject, body } = await c.req.json();
+
+    if (!email || !subject || !body) {
+      return c.text("Missing email, subject, or body", 400);
+    }
+
+    // Use "Test User" as the name for placeholder replacement
+    const name = "Test User";
+    const subjectFinal = subject.replace(/\{\{\s*name\s*\}\}/gi, name);
+    const bodyFinal = body.replace(/\{\{\s*name\s*\}\}/gi, name);
+
+    // Send the email using your existing sendEmail logic
+    const data = await resend.emails.send({
+      from: senderEmail,
+      to: email,
+      subject: subjectFinal,
+      html: bodyFinal,
+    });
+
+    let status = "sent";
+    let errorMsg = null;
+    if (!data || data.error) {
+      status = "failed";
+      errorMsg = data?.error?.message || "Unknown error";
+    }
+
+    // Log to DB
+    await db.execute(
+      `INSERT INTO emails (name, email, template_used, sent_at, status, error_msg)
+       VALUES (?, ?, ?, ?, ?, ?);`,
+      [name, email, body, Math.floor(Date.now() / 1000), status, errorMsg]
+    );
+
+    if (status === "sent") {
+      return c.text("Test email sent successfully!");
+    } else {
+      return c.text(`Failed to send test email: ${errorMsg}`, 500);
+    }
+  } catch (err) {
+    console.error("❌ Error in /send-test:", err);
+    return c.text("Internal server error", 500);
+  }
+});
